@@ -1,6 +1,5 @@
 package com.pluralsight;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class BankStone {
@@ -20,14 +19,58 @@ public class BankStone {
     }
 
     public static void home() {
+        boolean isRunning = true;
+        while (isRunning) {
+            System.out.println("""
+                    HOME
+                    
+                    Welcome!
+                    """);
+
+            String response = askUser("""
+                    Select an option below:
+                    D) Make a Deposit
+                    P) Make a Payment (Debit)
+                    L) View Ledger
+                    X) Exit
+                    """);
+
+            if (response == null || response.isEmpty()) {
+                System.out.println("Response not valid. Please try again");
+                continue;
+            }
+            else {
+                switch (response.toLowerCase()) {
+                    case "d": {
+                        makeDeposit();
+                    }
+
+                    case "p": {
+                        makePayment();
+                    }
+
+                    case "l": {
+                        viewLedger();
+                    }
+
+                    case "x": {
+                        isRunning = false;
+                        break;
+                    }
+
+                }
+            }
+
+        }
+
 
     }
 
-    public static void deposit() {
+    public static void makeDeposit() {
 
     }
 
-    public static void ledger() {
+    public static void viewLedger() {
 
     }
 
