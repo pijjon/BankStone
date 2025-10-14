@@ -1,12 +1,16 @@
 package com.pluralsight;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class BankStone {
     public static Scanner myScanner = new Scanner(System.in);
+
+    public static ArrayList<Transaction> ledger = new ArrayList<>();
 
     public static void main(String[] args) {
         home(); // start application and display home screen
@@ -82,10 +86,21 @@ public class BankStone {
     }
 
     public static void makeTransaction(String type) {
+        String description = askUser("Provide a description for this transaction");
+        String vendor = askUser("Provide the name of the vendor (your own name if depositing");
+        double amount;
         if (type.equals("deposit")) {
-            double amount = askUserDouble("How much money would you like to deposit?");
+            amount = Math.abs(askUserDouble("How much money would you like to deposit?"));
 
         }
+        else {
+            amount = -Math.abs(askUserDouble("How much was the charge?"));
+        }
+
+        Transaction transaction = new Transaction(description, vendor, amount);
+
+        ledger.add(transaction);
+
     }
 
     public static void viewLedger() {
