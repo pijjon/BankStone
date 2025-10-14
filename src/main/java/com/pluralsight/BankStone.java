@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class BankStone {
     public static Scanner myScanner = new Scanner(System.in);
     public static void main(String[] args) {
-
+        home(); // start application and display home screen
     }
 
     public static String askUser(String question) {
