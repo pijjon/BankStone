@@ -21,31 +21,6 @@ public class BankStone {
         home(); // start application and display home screen
     }
 
-    public static String askUser(String question) {
-        try {
-            System.out.println(question);
-            return myScanner.nextLine();
-        } catch (Exception e) { // usually only catches if there is something wrong with the scanner
-            System.out.println("Error prompting for user input");
-            return "";
-        }
-    }
-
-    public static double askUserDouble(String question) {
-        while (true) { // keep looping indefinitely
-            try {
-                System.out.println(question);
-                double response = myScanner.nextDouble();
-                myScanner.nextLine(); // eat the line
-                return response; // until a return statement is reached (return breaks the while loop)
-            } catch (InputMismatchException e) {
-                System.out.println("Incorrect input type. Try again!");
-            } catch (NoSuchElementException | IllegalStateException e) {
-                e.printStackTrace();
-                System.out.println("Something went wrong. Try again!");
-            }
-        }
-    }
 
     public static void home() {
         boolean isRunning = true;
@@ -170,6 +145,7 @@ public class BankStone {
         }
     }
 
+    // convert lines of text from csv into Transaction objects and return the object
     private static Transaction getTransaction(String line) {
         String[] parts = line.split("\\|");
         LocalDate date = LocalDate.parse(parts[0]);
@@ -184,5 +160,30 @@ public class BankStone {
 
         // create new objects with overloaded constructor function, passing in data
         return new Transaction(dateTime, description, vendor, amount);
+    }
+    public static String askUser(String question) {
+        try {
+            System.out.println(question);
+            return myScanner.nextLine();
+        } catch (Exception e) { // usually only catches if there is something wrong with the scanner
+            System.out.println("Error prompting for user input");
+            return "";
+        }
+    }
+
+    public static double askUserDouble(String question) {
+        while (true) { // keep looping indefinitely
+            try {
+                System.out.println(question);
+                double response = myScanner.nextDouble();
+                myScanner.nextLine(); // eat the line
+                return response; // until a return statement is reached (return breaks the while loop)
+            } catch (InputMismatchException e) {
+                System.out.println("Incorrect input type. Try again!");
+            } catch (NoSuchElementException | IllegalStateException e) {
+                e.printStackTrace();
+                System.out.println("Something went wrong. Try again!");
+            }
+        }
     }
 }
