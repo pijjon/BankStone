@@ -158,7 +158,9 @@ public class BankStone {
 
     // method for viewing all transactions
     public static void viewAll() {
-
+        for (Transaction transaction : ledger ) {
+            transaction.display();
+        }
     }
 
     // method for viewing all deposits
