@@ -1,11 +1,13 @@
 package com.pluralsight;
 
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
@@ -114,6 +116,36 @@ public class BankStone {
 
     }
 
+    public static void storeInCSV (Transaction transaction) {
+
+        LocalDateTime dateTime = transaction.getDateTime();
+
+        LocalDate date = dateTime.toLocalDate();
+
+        LocalTime rawTime = dateTime.toLocalTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String time = rawTime.format(formatter);
+
+        String description = transaction.getDescription();
+        String vendor = transaction.getVendor();
+        double amount = transaction.getAmount();
+
+        String line = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
+
+        try (
+                FileWriter fileWriter = new FileWriter("transactions.csv", true); // pass in true to enable append mode (to not overwrite the whole file)
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        ) {
+            bufferedWriter.newLine();
+            bufferedWriter.write(line);
+        }
+        catch (IOException e) {
+
+            System.out.println("Error writing file");
+
+        }
+
+    }
 
     public static void viewLedger() {
 
