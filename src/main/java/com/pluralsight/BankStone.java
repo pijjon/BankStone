@@ -238,7 +238,7 @@ public class BankStone {
     }
 
     public static double askUserDouble(String question) {
-        while (true) { // keep looping indefinitely
+        while (true) { // keep looping indefinitely until we get a correct input
             try {
                 System.out.println(question);
                 double response = myScanner.nextDouble();
@@ -246,6 +246,7 @@ public class BankStone {
                 return response; // until a return statement is reached (return breaks the while loop)
             } catch (InputMismatchException e) {
                 System.out.println("Incorrect input type. Try again!");
+                myScanner.nextLine(); // clear the buffer if wrong input type
             } catch (NoSuchElementException | IllegalStateException e) {
                 e.printStackTrace();
                 System.out.println("Something went wrong. Try again!");
