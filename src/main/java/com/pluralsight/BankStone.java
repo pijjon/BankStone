@@ -6,10 +6,8 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BankStone {
     public static Scanner myScanner = new Scanner(System.in);
@@ -165,7 +163,13 @@ public class BankStone {
 
     // method for viewing all deposits
     public static void viewDeposits() {
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getAmount() > 0)
+                .toList();
 
+        for (Transaction transaction : filtered) {
+            transaction.display();
+        }
     }
 
     // method for viewing all charges/payments
