@@ -54,7 +54,7 @@ public class BankStone {
                     }
 
                     case "l": {
-                        viewLedger();
+                        ledger();
                         break;
                     }
 
@@ -120,8 +120,40 @@ public class BankStone {
 
     }
 
-    public static void viewLedger() {
+    public static void ledger() {
+        boolean isRunning = true;
+        while (isRunning) {
+            String response = askUser("""
+                    LEDGER
+                    
+                    A) Display all entries
+                    D) Display deposits
+                    P) Display payments
+                    R) Go to Reports
+                    H) Home
+                    """);
+            switch (response.toLowerCase()) {
+                case "a":
+                    viewAll();
+                    break;
 
+                case "d":
+                    viewDeposits();
+                    break;
+
+                case "p":
+                    viewCharges();
+                    break;
+
+                case "r":
+                    reports();
+                    break;
+
+                case "h":
+                    isRunning = false;
+                    break;
+            }
+        }
     }
 
     // preload ArrayList
@@ -161,6 +193,7 @@ public class BankStone {
         // create new objects with overloaded constructor function, passing in data
         return new Transaction(dateTime, description, vendor, amount);
     }
+
     public static String askUser(String question) {
         try {
             System.out.println(question);
