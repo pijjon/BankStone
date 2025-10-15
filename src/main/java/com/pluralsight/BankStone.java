@@ -1,7 +1,11 @@
 package com.pluralsight;
 
-import java.lang.reflect.Array;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
@@ -18,6 +22,7 @@ public class BankStone {
 
     public static String askUser(String question) {
         try {
+            System.out.println(question);
             return myScanner.nextLine();
         } catch (Exception e) { // usually only catches if there is something wrong with the scanner
             System.out.println("Error prompting for user input");
@@ -28,6 +33,7 @@ public class BankStone {
     public static double askUserDouble(String question) {
         while (true) { // keep looping indefinitely
             try {
+                System.out.println(question);
                 double response = myScanner.nextDouble();
                 myScanner.nextLine(); // eat the line
                 return response; // until a return statement is reached (return breaks the while loop)
@@ -64,14 +70,17 @@ public class BankStone {
                 switch (response.toLowerCase()) {
                     case "d": {
                         makeTransaction("deposit");
+                        break;
                     }
 
                     case "p": {
                         makeTransaction("charge");
+                        break;
                     }
 
                     case "l": {
                         viewLedger();
+                        break;
                     }
 
                     case "x": {
@@ -86,8 +95,8 @@ public class BankStone {
     }
 
     public static void makeTransaction(String type) {
-        String description = askUser("Provide a description for this transaction");
-        String vendor = askUser("Provide the name of the vendor (your own name if depositing");
+        String description = askUser("Provide a description for this " + type);
+        String vendor = askUser("Provide the name of the vendor");
         double amount;
         if (type.equals("deposit")) {
             amount = Math.abs(askUserDouble("How much money would you like to deposit?"));
@@ -101,7 +110,10 @@ public class BankStone {
 
         ledger.add(transaction);
 
+        storeInCSV(transaction);
+
     }
+
 
     public static void viewLedger() {
 
