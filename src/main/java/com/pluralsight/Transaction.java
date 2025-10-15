@@ -31,7 +31,7 @@ public class Transaction {
         String description = getDescription();
         String vendor = getVendor();
         double amount = getAmount();
-        System.out.printf("\nDate: %s\nTime: %s\nDescription: %s\nVendor: %s\nAmount: %.2f", date, time, description, vendor, amount);
+        System.out.printf("\n\nDate: %s\nTime: %s\nDescription: %s\nVendor: %s\nAmount: %.2f", date, time, description, vendor, amount);
     }
 
     public LocalDateTime getDateTime() {
