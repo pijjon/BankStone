@@ -164,7 +164,7 @@ public class BankStone {
     public static String askUser(String question) {
         try {
             System.out.println(question);
-            return myScanner.nextLine();
+            return myScanner.nextLine().trim();
         } catch (Exception e) { // usually only catches if there is something wrong with the scanner
             System.out.println("Error prompting for user input");
             return "";
