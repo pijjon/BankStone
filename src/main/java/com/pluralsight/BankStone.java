@@ -122,6 +122,7 @@ public class BankStone {
         boolean isRunning = true;
         while (isRunning) {
             String response = askUser("""
+                    
                     LEDGER
                     
                     A) Display all entries
