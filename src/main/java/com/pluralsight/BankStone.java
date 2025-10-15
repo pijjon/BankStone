@@ -1,9 +1,7 @@
 package com.pluralsight;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,6 +17,7 @@ public class BankStone {
     public static ArrayList<Transaction> ledger = new ArrayList<>();
 
     public static void main(String[] args) {
+        preload(); // preload the ArrayList ledger with data already existing in csv file
         home(); // start application and display home screen
     }
 
@@ -67,7 +66,6 @@ public class BankStone {
 
             if (response == null || response.isEmpty()) {
                 System.out.println("Response not valid. Please try again");
-                continue;
             } else {
                 switch (response.toLowerCase()) {
                     case "d": {
@@ -151,11 +149,40 @@ public class BankStone {
 
     }
 
-    public static void makePayment() {
+    // preload ArrayList
+    public static void preload() {
+        // initialize FileReader and Buffered Reader in try-with-resources for auto closing
+        try (FileReader fileReader = new FileReader("transactions.csv");
+             BufferedReader bufferedReader = new BufferedReader(fileReader);) {
 
+            // iterate through each line of csv file to parse data
+            String line = bufferedReader.readLine(); // this is just the header line, not needed
+            while ((line = bufferedReader.readLine()) != null) {
+                Transaction transaction = getTransaction(line);
+
+                // add each new object to ledger ArrayList
+                ledger.add(transaction);
+            }
+
+        }
+        catch (IOException e) {
+            System.out.println("Error reading csv file");
+        }
     }
 
-    public static void preload() {
+    private static Transaction getTransaction(String line) {
+        String[] parts = line.split("\\|");
+        LocalDate date = LocalDate.parse(parts[0]);
+        LocalTime time = LocalTime.parse(parts[1]);
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
 
+        String description = parts[2];
+
+        String vendor = parts[3];
+
+        double amount = Double.parseDouble(parts[4]);
+
+        // create new objects with overloaded constructor function, passing in data
+        return new Transaction(dateTime, description, vendor, amount);
     }
 }
