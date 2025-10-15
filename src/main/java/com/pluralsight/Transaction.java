@@ -1,7 +1,9 @@
 package com.pluralsight;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Transaction {
     private LocalDateTime dateTime;
@@ -21,6 +23,15 @@ public class Transaction {
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
+    }
+
+    public void display() {
+        String date = getDateTime().toLocalDate().toString();
+        String time = getDateTime().toLocalTime().toString();
+        String description = getDescription();
+        String vendor = getVendor();
+        double amount = getAmount();
+        System.out.printf("\nDate: %s\nTime: %s\nDescription: %s\nVendor: %s\nAmount: %.2f", date, time, description, vendor, amount);
     }
 
     public LocalDateTime getDateTime() {
