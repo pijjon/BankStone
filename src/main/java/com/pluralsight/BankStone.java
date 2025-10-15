@@ -156,6 +156,26 @@ public class BankStone {
         }
     }
 
+    // method for viewing all transactions
+    public static void viewAll() {
+
+    }
+
+    // method for viewing all deposits
+    public static void viewDeposits() {
+
+    }
+
+    // method for viewing all charges/payments
+    public static void viewCharges() {
+
+    }
+
+    // method for displaying the reports screen
+    public static void reports() {
+
+    }
+
     // preload ArrayList
     public static void preload() {
         // initialize FileReader and Buffered Reader in try-with-resources for auto closing
