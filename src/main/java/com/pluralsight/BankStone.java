@@ -174,7 +174,13 @@ public class BankStone {
 
     // method for viewing all charges/payments
     public static void viewCharges() {
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getAmount() < 0)
+                .toList();
 
+        for (Transaction transaction : filtered) {
+            transaction.display();
+        }
     }
 
     // method for displaying the reports screen
