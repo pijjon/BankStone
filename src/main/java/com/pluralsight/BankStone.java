@@ -5,7 +5,6 @@ import java.io.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BankStone {
     public static Scanner myScanner = new Scanner(System.in);
