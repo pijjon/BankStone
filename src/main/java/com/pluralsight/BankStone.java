@@ -282,4 +282,54 @@ public class BankStone {
             }
         }
     }
+
+    public static void monthToDate() {
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth())
+                .toList();
+
+        for (Transaction transaction : ledger) {
+            transaction.display();
+        }
+    }
+
+    public static void previousMonth() {
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getDateTime().getMonth() == LocalDateTime.now().minusMonths(1).getMonth())
+                .toList();
+
+        for (Transaction transaction : ledger) {
+            transaction.display();
+        }
+    }
+    public static void yearToDate() {
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
+                .toList();
+
+        for (Transaction transaction : ledger) {
+            transaction.display();
+        }
+    }
+
+    public static void previousYear() {
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getDateTime().getYear() == LocalDateTime.now().minusYears(1).getYear())
+                .toList();
+
+        for (Transaction transaction : ledger) {
+            transaction.display();
+        }
+    }
+
+    public static void searchByVendor() {
+        String vendor = askUser("What vendor would you like to search for in transactions?");
+        List<Transaction> filtered = ledger.stream()
+                .filter(transaction -> transaction.getVendor().equalsIgnoreCase(vendor))
+                .toList();
+
+        for (Transaction transaction : ledger) {
+            transaction.display();
+        }
+    }
 }
