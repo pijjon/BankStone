@@ -34,7 +34,7 @@ public class BankStone {
                     X) Exit
                     """);
 
-            if (response == null || response.isEmpty()) {
+            if (response.isEmpty()) {
                 System.out.println("Response not valid. Please try again");
             } else {
                 switch (response.toLowerCase()) {
