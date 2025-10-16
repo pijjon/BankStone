@@ -297,7 +297,9 @@ public class BankStone {
 
     public static void previousMonth() {
         List<Transaction> filtered = ledger.stream()
-                .filter(transaction -> transaction.getDateTime().getMonth() == LocalDateTime.now().minusMonths(1).getMonth())
+                .filter(transaction ->
+                        transaction.getDateTime().getMonth() == LocalDateTime.now().minusMonths(1).getMonth() &&
+                        transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
                 .toList();
 
         for (Transaction transaction : ledger) {
