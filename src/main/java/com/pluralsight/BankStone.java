@@ -283,7 +283,7 @@ public class BankStone {
         }
     }
 
-    public static double askUserInt(String question) {
+    public static int askUserInt(String question) {
         while (true) { // keep looping indefinitely until we get a correct input
             try {
                 System.out.println(question);
