@@ -186,7 +186,38 @@ public class BankStone {
 
     // method for displaying the reports screen
     public static void reports() {
-
+        boolean isRunning = true;
+        while (isRunning) {
+            String response = askUser("""
+                    REPORTS
+                    
+                    1) Month To Date
+                    2) Previous Month
+                    3) Year To Date
+                    4) Previous Year
+                    5) Search by Vendor
+                    0) Back
+                    """);
+            switch (response) {
+                case "1":
+                    monthToDate();
+                    break;
+                case "2":
+                    previousMonth();
+                    break;
+                case "3":
+                    yearToDate();
+                    break;
+                case "4":
+                    previousYear();
+                    break;
+                case "5":
+                    searchByVendor();
+                    break;
+                case "0":
+                    isRunning = false;
+            }
+        }
     }
 
     // preload ArrayList
@@ -197,6 +228,7 @@ public class BankStone {
 
             // iterate through each line of csv file to parse data
             String line = bufferedReader.readLine(); // this is just the header line, not needed
+
             while ((line = bufferedReader.readLine()) != null) {
                 Transaction transaction = getTransaction(line);
 
