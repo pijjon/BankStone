@@ -127,6 +127,8 @@ public class BankStone {
                     P) Display payments
                     R) Go to Reports
                     H) Home
+                    
+                    Please select an option:
                     """);
             switch (response.toLowerCase()) {
                 case "a":
