@@ -283,6 +283,23 @@ public class BankStone {
         }
     }
 
+    public static double askUserInt(String question) {
+        while (true) { // keep looping indefinitely until we get a correct input
+            try {
+                System.out.println(question);
+                int response = myScanner.nextInt();
+                myScanner.nextLine(); // eat the line
+                return response; // until a return statement is reached (return breaks the while loop)
+            } catch (InputMismatchException e) {
+                System.out.println("Incorrect input type. Try again!");
+                myScanner.nextLine(); // clear the buffer if wrong input type
+            } catch (NoSuchElementException | IllegalStateException e) {
+                e.printStackTrace();
+                System.out.println("Something went wrong. Try again!");
+            }
+        }
+    }
+
     public static void monthToDate() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction ->
