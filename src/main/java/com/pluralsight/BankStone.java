@@ -285,7 +285,9 @@ public class BankStone {
 
     public static void monthToDate() {
         List<Transaction> filtered = ledger.stream()
-                .filter(transaction -> transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth())
+                .filter(transaction ->
+                        transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth() &&
+                        transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
                 .toList();
 
         for (Transaction transaction : ledger) {
