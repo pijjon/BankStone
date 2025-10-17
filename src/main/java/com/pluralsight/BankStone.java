@@ -14,26 +14,27 @@ import com.resend.services.emails.model.CreateEmailOptions;
 import com.resend.services.emails.model.CreateEmailResponse;
 
 public class BankStone {
-    public static Scanner myScanner = new Scanner(System.in);
+    public static Scanner myScanner = new Scanner(System.in); // static scanner declaration
 
-    public static ArrayList<Transaction> ledger = new ArrayList<>();
+    public static ArrayList<Transaction> ledger = new ArrayList<>(); // static ArrayList declaration
 
     public static void main(String[] args) {
         preload(); // preload the ArrayList ledger with data already existing in csv file
         home(); // start application and display home screen
     }
 
-
+    // method for displaying the home screen
     public static void home() {
+        // while loop to keep the screen up even if there are misinputs
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("""
+
+            String response = askUser("""
+                    
                     HOME
                     
                     Welcome!
-                    """);
-
-            String response = askUser("""
+                    
                     Select an option below:
                     D) Make a Deposit
                     P) Make a Payment (Debit)
@@ -41,26 +42,32 @@ public class BankStone {
                     X) Exit
                     """);
 
+            // input validation for empty input
             if (response.isEmpty()) {
                 System.out.println("Response not valid. Please try again");
             } else {
+                // control flow for user input
                 switch (response.toLowerCase()) {
                     case "d": {
+                        // invoke the makeTransaction() method and pass in deposit for tx type
                         makeTransaction("deposit");
                         break;
                     }
 
                     case "p": {
+                        // invoke the makeTransaction() method and pass in charge for tx type
                         makeTransaction("charge");
                         break;
                     }
 
                     case "l": {
+                        // display ledger screen
                         ledger();
                         break;
                     }
 
                     case "x": {
+                        // exit the program by stopping the while loop
                         isRunning = false;
                         break;
                     }
@@ -71,6 +78,7 @@ public class BankStone {
         }
     }
 
+    // static method for making transactions
     public static void makeTransaction(String type) {
         String description = askUser("Provide a description for this " + type);
         String vendor = askUser("Provide the name of the vendor");
@@ -84,47 +92,52 @@ public class BankStone {
 
         Transaction transaction = new Transaction(description, vendor, amount);
 
-        ledger.add(transaction);
-
-        storeInCSV(transaction, "transactions.csv");
+        // with each transaction made we:
+        ledger.add(transaction); // store in ArrayList ledger
+        storeInCSV(transaction, "transactions.csv");  // and write it to the csv file
 
     }
 
+    // method for writing lines to CSV file
     public static void storeInCSV(Transaction transaction, String filePath) {
 
         System.out.println("storing in CSV");
 
+        // get and format date
         LocalDateTime dateTime = transaction.getDateTime();
-
         LocalDate date = dateTime.toLocalDate();
 
+        // get and format time
         LocalTime rawTime = dateTime.toLocalTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String time = rawTime.format(formatter);
 
+        // get other info to construct new CSV line
         String description = transaction.getDescription();
         String vendor = transaction.getVendor();
         double amount = transaction.getAmount();
 
+        // build CSV line
         String line = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
 
         try (
                 FileWriter fileWriter = new FileWriter(filePath, true); // pass in true to enable append mode (to not overwrite the whole file)
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         ) {
+            // write line to file
             bufferedWriter.newLine();
             bufferedWriter.write(line);
-        } catch (IOException e) {
 
+        } catch (IOException e) { // cath input errors
             System.out.println("Error writing file");
-
         }
 
     }
 
+    // method for displaying ledger screen
     public static void ledger() {
         boolean isRunning = true;
-        while (isRunning) {
+        while (isRunning) { // keep display up even after misinput
             String response = askUser("""
                     
                     LEDGER
@@ -137,24 +150,31 @@ public class BankStone {
                     
                     Please select an option:
                     """);
+
+            // control flow for user input
             switch (response.toLowerCase()) {
                 case "a":
+                    // display all tx
                     viewAll();
                     break;
 
                 case "d":
+                    // display positive tx
                     viewDeposits();
                     break;
 
                 case "p":
+                    //display negative tx
                     viewCharges();
                     break;
 
                 case "r":
+                    // display the reports screen
                     reports();
                     break;
 
                 case "h":
+                    // back to home display loop
                     isRunning = false;
                     break;
             }
@@ -163,7 +183,9 @@ public class BankStone {
 
     // method for viewing all transactions
     public static void viewAll() {
+        // loop through ArrayList
         for (Transaction transaction : ledger) {
+            // use display() class method
             transaction.display();
         }
     }
@@ -171,7 +193,7 @@ public class BankStone {
     // method for viewing all deposits
     public static void viewDeposits() {
         List<Transaction> filtered = ledger.stream()
-                .filter(transaction -> transaction.getAmount() > 0)
+                .filter(transaction -> transaction.getAmount() > 0) // filter by positive amounts
                 .toList();
 
         for (Transaction transaction : filtered) {
@@ -182,7 +204,7 @@ public class BankStone {
     // method for viewing all charges/payments
     public static void viewCharges() {
         List<Transaction> filtered = ledger.stream()
-                .filter(transaction -> transaction.getAmount() < 0)
+                .filter(transaction -> transaction.getAmount() < 0) // filter by negative amounts
                 .toList();
 
         for (Transaction transaction : filtered) {
@@ -193,7 +215,7 @@ public class BankStone {
     // method for displaying the reports screen
     public static void reports() {
         boolean isRunning = true;
-        while (isRunning) {
+        while (isRunning) { // keep screen running
             String response = askUser("""
                     
                     REPORTS
@@ -206,26 +228,35 @@ public class BankStone {
                     6) Custom Search
                     0) Back
                     """);
+
+            // control flow for user input
             switch (response) {
                 case "1":
+                    // display month to date tx
                     monthToDate();
                     break;
                 case "2":
+                    // display previous month tx
                     previousMonth();
                     break;
                 case "3":
+                    // display year to date tx
                     yearToDate();
                     break;
                 case "4":
+                    // display prev year tx
                     previousYear();
                     break;
                 case "5":
+                    // display tx by vendor
                     searchByVendor();
                     break;
                 case "6":
+                    // display customSearch() screen
                     customSearch();
                     break;
                 case "0":
+                    // previous screen by breaking loop
                     isRunning = false;
             }
         }
@@ -240,6 +271,7 @@ public class BankStone {
             // iterate through each line of csv file to parse data
             String line = bufferedReader.readLine(); // this is just the header line, not needed
 
+            // read next line and make sure it is not null
             while ((line = bufferedReader.readLine()) != null) {
                 Transaction transaction = getTransaction(line);
 
@@ -269,6 +301,7 @@ public class BankStone {
         return new Transaction(dateTime, description, vendor, amount);
     }
 
+    // method for prompting user for String input
     public static String askUser(String question) {
         try {
             System.out.println(question);
@@ -279,6 +312,7 @@ public class BankStone {
         }
     }
 
+    //method for prompting user for Double input
     public static double askUserDouble(String question) {
         while (true) { // keep looping indefinitely until we get a correct input
             try {
@@ -296,23 +330,7 @@ public class BankStone {
         }
     }
 
-    public static int askUserInt(String question) {
-        while (true) { // keep looping indefinitely until we get a correct input
-            try {
-                System.out.println(question);
-                int response = myScanner.nextInt();
-                myScanner.nextLine(); // eat the line
-                return response; // until a return statement is reached (return breaks the while loop)
-            } catch (InputMismatchException e) {
-                System.out.println("Incorrect input type. Try again!");
-                myScanner.nextLine(); // clear the buffer if wrong input type
-            } catch (NoSuchElementException | IllegalStateException e) {
-                e.printStackTrace();
-                System.out.println("Something went wrong. Try again!");
-            }
-        }
-    }
-
+    // method for displaying tx this month
     public static void monthToDate() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction ->
@@ -325,6 +343,7 @@ public class BankStone {
         }
     }
 
+    // method for displaying tx last month
     public static void previousMonth() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction ->
@@ -337,6 +356,7 @@ public class BankStone {
         }
     }
 
+    // method for displaying tx this year
     public static void yearToDate() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction -> transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
@@ -347,6 +367,7 @@ public class BankStone {
         }
     }
 
+    // method for displaying tx last year
     public static void previousYear() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction -> transaction.getDateTime().getYear() == LocalDateTime.now().minusYears(1).getYear())
@@ -357,6 +378,7 @@ public class BankStone {
         }
     }
 
+    // method for displaying tx by vendor
     public static void searchByVendor() {
         String vendor = askUser("What vendor would you like to search for in transactions?");
         List<Transaction> filtered = ledger.stream()
@@ -368,7 +390,9 @@ public class BankStone {
         }
     }
 
+    //method for displaying custom search screen
     public static void customSearch() {
+        // initialize filter values
         String startDateStr = null;
         String endDateStr = null;
         LocalDate startDate = null;
@@ -379,7 +403,7 @@ public class BankStone {
         Double startAmount = null;
         Double endAmount = null;
 
-        while (true) {
+        while (true) { // keep menu running
             String question = String.format("""
                     
                     CUSTOM REPORT
@@ -397,21 +421,24 @@ public class BankStone {
                     G) Generate Report
                     X) Exit to Reports
                     
-                    """, startDateStr, endDateStr, vendor, description, type, startAmount, endAmount);
+                    """, startDateStr, endDateStr, vendor, description, type, startAmount, endAmount); // use formatting to display current filter details
 
-            String response = askUser(question);
+            String response = askUser(question); // prompt for user selection
 
+            // control flow for user inputs for changing filter items
             switch (response.toLowerCase()) {
 
+                // option for start date filter
                 case "1":
                     String update1 = askUser("What start date would you like to search by? (Leave blank to skip)");
                     if (!isNullOrEmpty(update1)) {
                         startDate = LocalDate.parse(update1);
-                        startDateStr = startDate.toString();
+                        startDateStr = startDate.toString(); // necessary for String formatting above
                         System.out.println(startDate);
                     }
                     break;
 
+                // option for end date filter
                 case "2":
                     String update2 = askUser("What end date would you like to search by? (Leave blank to skip)");
                     if (!isNullOrEmpty(update2)) {
@@ -421,6 +448,7 @@ public class BankStone {
                     }
                     break;
 
+                // option for vendor filter
                 case "3":
                     String update3 = askUser("What vendor would you like to search by? (Leave blank to skip)");
                     if (!isNullOrEmpty(update3)) {
@@ -428,6 +456,7 @@ public class BankStone {
                     }
                     break;
 
+                // option for description filter
                 case "4":
                     String update4 = askUser("What description would you like to search by? (Leave blank to skip)");
                     if (!isNullOrEmpty(update4)) {
@@ -435,6 +464,7 @@ public class BankStone {
                     }
                     break;
 
+                // option for tx type filter
                 case "5":
                     while (true) {
                         String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
@@ -457,6 +487,7 @@ public class BankStone {
                     }
                     break;
 
+                // option for start amount filter
                 case "6":
                     String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)");
                     if (!isNullOrEmpty(update6)) {
@@ -464,6 +495,7 @@ public class BankStone {
                     }
                     break;
 
+                // option for end amount filter
                 case "7":
                     String update7 = askUser("What maximum amount would you like to filter for? (Leave blank to skip)");
                     if (!isNullOrEmpty(update7)) {
@@ -471,6 +503,7 @@ public class BankStone {
                     }
                     break;
 
+                // option for filtering ledger based on custom filters
                 case "g":
                     customFilter(
                             startDateStr,
@@ -492,6 +525,7 @@ public class BankStone {
 
     }
 
+    // method for filtering in customSearch()
     private static void customFilter(
             String startDateStr,
             String endDateStr,
@@ -526,27 +560,29 @@ public class BankStone {
                 .toList();
 
         for (Transaction transaction : filtered) {
-            transaction.display();
-            storeInCSV(transaction, "report.csv");
+            transaction.display(); // display each
+            storeInCSV(transaction, "report.csv"); // store in new report.csv file
 
         }
         try {
-            emailFile("report.csv");
+            emailFile("report.csv"); // invoke method for emailing the generated report
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
 
+    // method for checking isf value is null or empty
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.isEmpty();
     }
 
+    // method for using Resend package to send email with attachment
     public static void emailFile(String path) throws IOException {
         String email = askUser("What is the email you'd like to send this file to?");
-        ;
-        Resend resend = new Resend(System.getenv("RESEND_API_KEY_1"));
-        System.out.println(System.getenv("RESEND_API_KEY_1"));
+
+        // resend api key is stored in the environment variable
+        Resend resend = new Resend(System.getenv("RESEND_API_KEY"));
 
         // Read your file (e.g., invoice.pdf) as bytes
         byte[] fileBytes = Files.readAllBytes(Path.of("report.csv"));
@@ -556,19 +592,20 @@ public class BankStone {
 
         // Create the attachment object with filename and Base64 content
         Attachment attachment = Attachment.builder()
-                .fileName("invoice.pdf")
+                .fileName("report.csv") // used to specify the name of the file
                 .content(base64Content)
                 .build();
 
         CreateEmailOptions params = CreateEmailOptions.builder()
-                .from("Acme <onboarding@resend.dev>")
+                .from("BankStone App <onboarding@resend.dev>")
                 .to(email)
                 .subject("Report Generated")
                 .html("<strong>Your Report is Attached</strong>")
-                .attachments(attachment)
+                .attachments(attachment) // actually attach the file I made
                 .build();
 
         try {
+            // attempt to send the email that was built
             CreateEmailResponse data = resend.emails().send(params);
             System.out.println(data.getId());
         } catch (ResendException e) {
