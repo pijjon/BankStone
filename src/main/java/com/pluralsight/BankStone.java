@@ -473,4 +473,46 @@ public class BankStone {
 
 
     }
+
+    private static void customFilter(
+            String startDateStr,
+            String endDateStr,
+            LocalDate startDate,
+            LocalDate endDate,
+            String vendor,
+            String description,
+            String type,
+            Double startAmount,
+            Double endAmount) {
+
+        List<Transaction> filtered = ledger.stream()
+                // filter by elements after startDate if it exists
+                .filter(transaction -> (isNullOrEmpty(startDateStr) || transaction.getDateTime().isAfter(startDate.atStartOfDay())))
+
+                // filter by elements before endDate if it exists
+                .filter(transaction -> (isNullOrEmpty(endDateStr) || transaction.getDateTime().isBefore(endDate.atStartOfDay())))
+
+                // filter by elements that contain vendor name
+                .filter(transaction -> (isNullOrEmpty(vendor) || transaction.getVendor().toLowerCase().contains(vendor.toLowerCase())))
+
+                // filter by elements that contain description
+                .filter(transaction -> (isNullOrEmpty(description) || transaction.getDescription().toLowerCase().contains(description.toLowerCase())))
+
+                // filter elements by transaction type if it exists (positive amounts if deposits, negative amounts if payments
+                .filter(transaction -> (isNullOrEmpty(type) || (type.equals("deposits") ? transaction.getAmount() > 0 : transaction.getAmount() < 0)))
+
+                // filter by elements in startAmount and endAmount range
+                .filter(transaction -> (startAmount == null || transaction.getAmount() > startAmount) && (endAmount == null || transaction.getAmount() < endAmount))
+
+                // save as List
+                .toList();
+
+        for (Transaction transaction : filtered) {
+            transaction.display();
+        }
+    }
+
+    public static boolean isNullOrEmpty(String str) {
+        return str == null || str.isEmpty();
+    }
 }
