@@ -351,7 +351,7 @@ public class BankStone {
                 .filter(transaction -> transaction.getVendor().equalsIgnoreCase(vendor))
                 .toList();
 
-        for (Transaction transaction : ledger) {
+        for (Transaction transaction : filtered) {
             transaction.display();
         }
     }
