@@ -355,4 +355,63 @@ public class BankStone {
             transaction.display();
         }
     }
+
+    public static void customSearch() {
+        String startDate = null;
+        LocalDate startDateStr = null;
+        LocalTime startTimeStr = null;
+        String endDate = null;
+        String vendor = null;
+        String description = null;
+        String type = null;
+        Double startAmount = null;
+        Double endAmount = null;
+
+        while (true) {
+            String question = String.format("""
+                    CUSTOM REPORT
+                    
+                    Please select a filter below to change:
+                    
+                    1) Start Date:             %s
+                    2) End Date:               %s
+                    3) Vendor:                 %s
+                    4) Description:            %s
+                    5) Type (Deposit/Payment): %s
+                    6) Start Amount:           %.2f
+                    7) End Amount:             %.2f
+                    
+                    G) Generate Report
+                    X) Exit to Reports
+                    
+                    """, startDate, endDate, vendor, description, type, startAmount, endAmount);
+
+            String response = askUser(question);
+
+            switch (response.toLowerCase()) {
+
+                case "1":
+
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                case "g":
+                case "x":
+
+            }
+
+            startDate = askUser("What start date would you like to search by? (Leave blank to skip)");
+            endDate = askUser("What end date would you like to search by? (Leave blank to skip)");
+            vendor = askUser("What vendor would you like to search by? (Leave blank to skip)");
+            description = askUser("What description would you like to search by? (Leave blank to skip)");
+            type = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
+            startAmount = askUserDouble("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+            endAmount = askUserDouble("What maximum amount would you like to filter for? (Leave blank to skip)");
+        }
+
+
+    }
 }
