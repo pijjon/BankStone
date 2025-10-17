@@ -419,11 +419,25 @@ public class BankStone {
                     break;
 
                 case "5":
-                    String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
-                    if (!update5.isEmpty()) {
-                        type = update5;
+                    while (true) {
+                        String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
+                        if (!update5.isEmpty()) {
+                            if (update5.equalsIgnoreCase("d")) {
+                                type = "deposits";
+                                break;
+                            }
+                            else if (update5.equalsIgnoreCase("p")) {
+                                type = "payments";
+                                break;
+                            }
+                            else {
+                                System.out.println("Improper input!");
+                                continue;
+                            }
+                        }
+                        break;
+
                     }
-                    break;
 
                 case "6":
                     String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
