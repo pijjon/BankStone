@@ -394,7 +394,7 @@ public class BankStone {
 
                 case "1":
                     String update1 = askUser("What start date would you like to search by? (Leave blank to skip)");
-                    if (isNullOrEmpty(update1)) {
+                    if (!isNullOrEmpty(update1)) {
                         startDate = LocalDate.parse(update1);
                         startDateStr = startDate.toString();
                     }
@@ -402,7 +402,7 @@ public class BankStone {
 
                 case "2":
                     String update2 = askUser("What end date would you like to search by? (Leave blank to skip)");
-                    if (isNullOrEmpty(update2)) {
+                    if (!isNullOrEmpty(update2)) {
                         endDate = LocalDate.parse(update2);
                         endDateStr = endDate.toString();
                     }
@@ -410,14 +410,14 @@ public class BankStone {
 
                 case "3":
                     String update3 = askUser("What vendor would you like to search by? (Leave blank to skip)");
-                    if (isNullOrEmpty(update3)) {
+                    if (!isNullOrEmpty(update3)) {
                         vendor = update3;
                     }
                     break;
 
                 case "4":
                     String update4 = askUser("What description would you like to search by? (Leave blank to skip)");
-                    if (isNullOrEmpty(update4)) {
+                    if (!isNullOrEmpty(update4)) {
                         description = update4;
                     }
                     break;
@@ -425,7 +425,7 @@ public class BankStone {
                 case "5":
                     while (true) {
                         String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
-                        if (isNullOrEmpty(update5)) {
+                        if (!isNullOrEmpty(update5)) {
                             if (update5.equalsIgnoreCase("d")) {
                                 type = "deposits";
                                 break;
@@ -445,14 +445,14 @@ public class BankStone {
 
                 case "6":
                     String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
-                    if (isNullOrEmpty(update6)) {
+                    if (!isNullOrEmpty(update6)) {
                         startAmount = Double.parseDouble(update6);
                     }
                     break;
 
                 case "7":
                     String update7 = askUser("What maximum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
-                    if (isNullOrEmpty(update7)) {
+                    if (!isNullOrEmpty(update7)) {
                         endAmount = Double.parseDouble(update7);
                     }
                     break;
@@ -471,7 +471,7 @@ public class BankStone {
 
 
                 case "x":
-
+                return;
             }
         }
 
