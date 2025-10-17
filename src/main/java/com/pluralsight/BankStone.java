@@ -454,6 +454,17 @@ public class BankStone {
                     break;
 
                 case "g":
+                    customFilter(
+                            startDateStr,
+                            endDateStr,
+                            startDate,
+                            endDate,
+                            vendor,
+                            description,
+                            type,
+                            startAmount,
+                            endAmount);
+
 
                 case "x":
 
