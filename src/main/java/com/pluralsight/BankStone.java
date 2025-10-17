@@ -330,7 +330,7 @@ public class BankStone {
                 .filter(transaction -> transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
                 .toList();
 
-        for (Transaction transaction : ledger) {
+        for (Transaction transaction : filtered) {
             transaction.display();
         }
     }
