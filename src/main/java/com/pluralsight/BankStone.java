@@ -71,8 +71,7 @@ public class BankStone {
         if (type.equals("deposit")) {
             amount = Math.abs(askUserDouble("How much money would you like to deposit?"));
 
-        }
-        else {
+        } else {
             amount = -Math.abs(askUserDouble("How much was the charge?"));
         }
 
@@ -84,7 +83,7 @@ public class BankStone {
 
     }
 
-    public static void storeInCSV (Transaction transaction) {
+    public static void storeInCSV(Transaction transaction) {
 
         LocalDateTime dateTime = transaction.getDateTime();
 
@@ -106,8 +105,7 @@ public class BankStone {
         ) {
             bufferedWriter.newLine();
             bufferedWriter.write(line);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
 
             System.out.println("Error writing file");
 
@@ -156,7 +154,7 @@ public class BankStone {
 
     // method for viewing all transactions
     public static void viewAll() {
-        for (Transaction transaction : ledger ) {
+        for (Transaction transaction : ledger) {
             transaction.display();
         }
     }
@@ -235,8 +233,7 @@ public class BankStone {
                 ledger.add(transaction);
             }
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Error reading csv file");
         }
     }
@@ -305,8 +302,8 @@ public class BankStone {
     public static void monthToDate() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction ->
-                        transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth() &&
-                        transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
+                                transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth() &&
+                                transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
                 .toList();
 
         for (Transaction transaction : filtered) {
@@ -318,13 +315,14 @@ public class BankStone {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction ->
                         transaction.getDateTime().getMonth() == LocalDateTime.now().minusMonths(1).getMonth() &&
-                        transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
+                                transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
                 .toList();
 
         for (Transaction transaction : filtered) {
             transaction.display();
         }
     }
+
     public static void yearToDate() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction -> transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
@@ -357,10 +355,10 @@ public class BankStone {
     }
 
     public static void customSearch() {
-        String startDate = null;
-        LocalDate startDateStr = null;
-        LocalTime startTimeStr = null;
-        String endDate = null;
+        String startDateStr = null;
+        String endDateStr = null;
+        LocalDate startDate = null;
+        LocalDate endDate = null;
         String vendor = null;
         String description = null;
         String type = null;
@@ -391,24 +389,49 @@ public class BankStone {
             switch (response.toLowerCase()) {
 
                 case "1":
-
+                    String update1 = askUser("What start date would you like to search by? (Leave blank to skip)");
+                    if (!update1.isEmpty()) {
+                        startDate = LocalDate.parse(update1);
+                        startDateStr = startDate.toString();
+                    }
+                    break;
                 case "2":
+                    String update2 = askUser("What end date would you like to search by? (Leave blank to skip)");
+                    if (!update2.isEmpty()) {
+                        endDate = LocalDate.parse(update2);
+                        endDateStr = endDate.toString();
+                    }
                 case "3":
+                    String update3 = askUser("What vendor would you like to search by? (Leave blank to skip)");
+                    if (!update3.isEmpty()) {
+                        vendor = update3;
+                    }
                 case "4":
+                    String update4 = askUser("What description would you like to search by? (Leave blank to skip)");
+                    if (!update4.isEmpty()) {
+                        description = update4;
+                    }
                 case "5":
+                    String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
+                    if (!update5.isEmpty()) {
+                        type = update5;
+                    }
                 case "6":
+                    String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+                    if (!update6.isEmpty()) {
+                        startAmount = Double.parseDouble(update6);
+                    }
                 case "7":
+                    String update7 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+                    if (!update7.isEmpty()) {
+                        startAmount = Double.parseDouble(update7);
+                    }
                 case "g":
                 case "x":
 
             }
 
-            startDate = askUser("What start date would you like to search by? (Leave blank to skip)");
-            endDate = askUser("What end date would you like to search by? (Leave blank to skip)");
-            vendor = askUser("What vendor would you like to search by? (Leave blank to skip)");
-            description = askUser("What description would you like to search by? (Leave blank to skip)");
-            type = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
-            startAmount = askUserDouble("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+
             endAmount = askUserDouble("What maximum amount would you like to filter for? (Leave blank to skip)");
         }
 
