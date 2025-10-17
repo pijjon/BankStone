@@ -193,6 +193,7 @@ public class BankStone {
                     3) Year To Date
                     4) Previous Year
                     5) Search by Vendor
+                    6) Custom Search
                     0) Back
                     """);
             switch (response) {
@@ -210,6 +211,9 @@ public class BankStone {
                     break;
                 case "5":
                     searchByVendor();
+                    break;
+                case "6":
+                    customSearch();
                     break;
                 case "0":
                     isRunning = false;
@@ -302,7 +306,7 @@ public class BankStone {
     public static void monthToDate() {
         List<Transaction> filtered = ledger.stream()
                 .filter(transaction ->
-                                transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth() &&
+                        transaction.getDateTime().getMonth() == LocalDateTime.now().getMonth() &&
                                 transaction.getDateTime().getYear() == LocalDateTime.now().getYear())
                 .toList();
 
@@ -390,7 +394,7 @@ public class BankStone {
 
                 case "1":
                     String update1 = askUser("What start date would you like to search by? (Leave blank to skip)");
-                    if (!update1.isEmpty()) {
+                    if (isNullOrEmpty(update1)) {
                         startDate = LocalDate.parse(update1);
                         startDateStr = startDate.toString();
                     }
@@ -398,7 +402,7 @@ public class BankStone {
 
                 case "2":
                     String update2 = askUser("What end date would you like to search by? (Leave blank to skip)");
-                    if (!update2.isEmpty()) {
+                    if (isNullOrEmpty(update2)) {
                         endDate = LocalDate.parse(update2);
                         endDateStr = endDate.toString();
                     }
@@ -406,14 +410,14 @@ public class BankStone {
 
                 case "3":
                     String update3 = askUser("What vendor would you like to search by? (Leave blank to skip)");
-                    if (!update3.isEmpty()) {
+                    if (isNullOrEmpty(update3)) {
                         vendor = update3;
                     }
                     break;
 
                 case "4":
                     String update4 = askUser("What description would you like to search by? (Leave blank to skip)");
-                    if (!update4.isEmpty()) {
+                    if (isNullOrEmpty(update4)) {
                         description = update4;
                     }
                     break;
@@ -421,7 +425,7 @@ public class BankStone {
                 case "5":
                     while (true) {
                         String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
-                        if (!update5.isEmpty()) {
+                        if (isNullOrEmpty(update5)) {
                             if (update5.equalsIgnoreCase("d")) {
                                 type = "deposits";
                                 break;
@@ -441,14 +445,14 @@ public class BankStone {
 
                 case "6":
                     String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
-                    if (!update6.isEmpty()) {
+                    if (isNullOrEmpty(update6)) {
                         startAmount = Double.parseDouble(update6);
                     }
                     break;
 
                 case "7":
                     String update7 = askUser("What maximum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
-                    if (!update7.isEmpty()) {
+                    if (isNullOrEmpty(update7)) {
                         endAmount = Double.parseDouble(update7);
                     }
                     break;
