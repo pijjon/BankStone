@@ -5,28 +5,28 @@ It allows users to make deposits and payments, view and filter transactions, gen
 
 ---
 
-## 📋 Features
+## Features
 
-- **💰 Make Deposits and Payments**
+- **Make Deposits and Payments**
   - Add new transactions (credits and debits) with descriptions and vendor names.
   - Automatically saved into a local CSV file (`transactions.csv`).
 
-- **📑 View Ledger**
+- **View Ledger**
   - See all transactions.
   - Filter by deposits, payments, or view custom reports.
 
-- **📊 Generate Reports**
+- **Generate Reports**
   - Month-to-date, previous month, year-to-date, and previous year summaries.
   - Search transactions by vendor.
   - Build **custom reports** using multiple filters (date range, vendor, description, amount, etc.).
 
-- **📧 Email Reports**
+- **Email Reports**
   - Automatically generates a `report.csv` file.
   - Sends it as an email attachment via the **Resend API**.
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Java 17+**
 - **Resend API** (for email sending)
@@ -36,7 +36,7 @@ It allows users to make deposits and payments, view and filter transactions, gen
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 src/
@@ -48,7 +48,7 @@ src/
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 ### 1. Clone the Repository
 ```bash
@@ -92,22 +92,7 @@ date|time|description|vendor|amount
 
 ---
 
-## ▶️ Running the App
-
-You can compile and run from the command line:
-
-```bash
-javac -cp .:resend-java.jar com/pluralsight/BankStone.java
-java -cp .:resend-java.jar com.pluralsight.BankStone
-```
-
-Or, if using an IDE like IntelliJ or VS Code:
-- Open the project.
-- Run the `BankStone.main()` method.
-
----
-
-## 🧭 Navigation
+## Navigation
 
 **Main Menu:**
 ```
@@ -142,7 +127,7 @@ REPORTS
 
 ---
 
-## 🧠 Example Flow
+## Example Flow
 
 1. Start the program → choose **Deposit** (`D`)  
 2. Enter description, vendor, and amount.  
@@ -151,7 +136,7 @@ REPORTS
 
 ---
 
-## 📤 Emailing Reports
+## Emailing Reports
 
 When you generate a report (via **Custom Search**), the app automatically:
 1. Saves filtered results to `report.csv`
