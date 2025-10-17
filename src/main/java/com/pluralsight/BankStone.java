@@ -2,9 +2,16 @@ package com.pluralsight;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import com.resend.*;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.Attachment;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 
 public class BankStone {
     public static Scanner myScanner = new Scanner(System.in);
@@ -79,11 +86,13 @@ public class BankStone {
 
         ledger.add(transaction);
 
-        storeInCSV(transaction);
+        storeInCSV(transaction, "transactions.csv");
 
     }
 
-    public static void storeInCSV(Transaction transaction) {
+    public static void storeInCSV(Transaction transaction, String filePath) {
+
+        System.out.println("storing in CSV");
 
         LocalDateTime dateTime = transaction.getDateTime();
 
@@ -100,7 +109,7 @@ public class BankStone {
         String line = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
 
         try (
-                FileWriter fileWriter = new FileWriter("transactions.csv", true); // pass in true to enable append mode (to not overwrite the whole file)
+                FileWriter fileWriter = new FileWriter(filePath, true); // pass in true to enable append mode (to not overwrite the whole file)
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         ) {
             bufferedWriter.newLine();
@@ -186,6 +195,7 @@ public class BankStone {
         boolean isRunning = true;
         while (isRunning) {
             String response = askUser("""
+                    
                     REPORTS
                     
                     1) Month To Date
@@ -371,6 +381,7 @@ public class BankStone {
 
         while (true) {
             String question = String.format("""
+                    
                     CUSTOM REPORT
                     
                     Please select a filter below to change:
@@ -397,6 +408,7 @@ public class BankStone {
                     if (!isNullOrEmpty(update1)) {
                         startDate = LocalDate.parse(update1);
                         startDateStr = startDate.toString();
+                        System.out.println(startDate);
                     }
                     break;
 
@@ -405,6 +417,7 @@ public class BankStone {
                     if (!isNullOrEmpty(update2)) {
                         endDate = LocalDate.parse(update2);
                         endDateStr = endDate.toString();
+                        System.out.println(endDate);
                     }
                     break;
 
@@ -442,16 +455,17 @@ public class BankStone {
                         break;
 
                     }
+                    break;
 
                 case "6":
-                    String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+                    String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)");
                     if (!isNullOrEmpty(update6)) {
                         startAmount = Double.parseDouble(update6);
                     }
                     break;
 
                 case "7":
-                    String update7 = askUser("What maximum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+                    String update7 = askUser("What maximum amount would you like to filter for? (Leave blank to skip)");
                     if (!isNullOrEmpty(update7)) {
                         endAmount = Double.parseDouble(update7);
                     }
@@ -506,17 +520,60 @@ public class BankStone {
                 .filter(transaction -> (isNullOrEmpty(type) || (type.equals("deposits") ? transaction.getAmount() > 0 : transaction.getAmount() < 0)))
 
                 // filter by elements in startAmount and endAmount range
-                .filter(transaction -> (startAmount == null || transaction.getAmount() > startAmount) && (endAmount == null || transaction.getAmount() < endAmount))
+                .filter(transaction -> (startAmount == null || Math.abs(transaction.getAmount()) > Math.abs(startAmount)) && (endAmount == null || Math.abs(transaction.getAmount()) < Math.abs(endAmount)))
 
                 // save as List
                 .toList();
 
         for (Transaction transaction : filtered) {
             transaction.display();
+            storeInCSV(transaction, "report.csv");
+
         }
+        try {
+            emailFile("report.csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.isEmpty();
     }
+
+    public static void emailFile(String path) throws IOException {
+        String email = askUser("What is the email you'd like to send this file to?");
+        ;
+        Resend resend = new Resend(System.getenv("RESEND_API_KEY_1"));
+        System.out.println(System.getenv("RESEND_API_KEY_1"));
+
+        // Read your file (e.g., invoice.pdf) as bytes
+        byte[] fileBytes = Files.readAllBytes(Path.of("report.csv"));
+
+        // Encode the bytes to Base64 string
+        String base64Content = Base64.getEncoder().encodeToString(fileBytes);
+
+        // Create the attachment object with filename and Base64 content
+        Attachment attachment = Attachment.builder()
+                .fileName("invoice.pdf")
+                .content(base64Content)
+                .build();
+
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("Acme <onboarding@resend.dev>")
+                .to(email)
+                .subject("Report Generated")
+                .html("<strong>Your Report is Attached</strong>")
+                .attachments(attachment)
+                .build();
+
+        try {
+            CreateEmailResponse data = resend.emails().send(params);
+            System.out.println(data.getId());
+        } catch (ResendException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
