@@ -382,7 +382,7 @@ public class BankStone {
                     G) Generate Report
                     X) Exit to Reports
                     
-                    """, startDate, endDate, vendor, description, type, startAmount, endAmount);
+                    """, startDateStr, endDateStr, vendor, description, type, startAmount, endAmount);
 
             String response = askUser(question);
 
@@ -395,44 +395,55 @@ public class BankStone {
                         startDateStr = startDate.toString();
                     }
                     break;
+
                 case "2":
                     String update2 = askUser("What end date would you like to search by? (Leave blank to skip)");
                     if (!update2.isEmpty()) {
                         endDate = LocalDate.parse(update2);
                         endDateStr = endDate.toString();
                     }
+                    break;
+
                 case "3":
                     String update3 = askUser("What vendor would you like to search by? (Leave blank to skip)");
                     if (!update3.isEmpty()) {
                         vendor = update3;
                     }
+                    break;
+
                 case "4":
                     String update4 = askUser("What description would you like to search by? (Leave blank to skip)");
                     if (!update4.isEmpty()) {
                         description = update4;
                     }
+                    break;
+
                 case "5":
                     String update5 = askUser("What transaction type would you like to search by? (Leave blank to skip)\nD) Deposits or P)Payments/Charges ");
                     if (!update5.isEmpty()) {
                         type = update5;
                     }
+                    break;
+
                 case "6":
                     String update6 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
                     if (!update6.isEmpty()) {
                         startAmount = Double.parseDouble(update6);
                     }
+                    break;
+
                 case "7":
-                    String update7 = askUser("What minimum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
+                    String update7 = askUser("What maximum amount would you like to filter for? (Leave blank to skip)\nNote: Negative values are payments");
                     if (!update7.isEmpty()) {
-                        startAmount = Double.parseDouble(update7);
+                        endAmount = Double.parseDouble(update7);
                     }
+                    break;
+
                 case "g":
+
                 case "x":
 
             }
-
-
-            endAmount = askUserDouble("What maximum amount would you like to filter for? (Leave blank to skip)");
         }
 
 
